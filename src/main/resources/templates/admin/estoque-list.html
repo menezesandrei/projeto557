@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorator="/admin/admin_layout">
+<head>
+    <meta charset="UTF-8">
+    <title>Estoque</title>
+
+    <div layout:fragment="style">
+
+        <link rel="stylesheet" href="/admin/plugins/datatables-bs4/css/dataTables.bootstrap4.min.css">
+        <link rel="stylesheet" href="/admin/plugins/datatables-responsive/css/responsive.bootstrap4.min.css">
+
+        <style>
+
+            .pointer-tr{
+                cursor: pointer !important;
+            }
+
+        </style>
+
+    </div>
+
+</head>
+<body>
+
+
+<div layout:fragment="content">
+
+    <!-- Content Header (Page header) -->
+    <div class="content-header">
+        <div class="container-fluid">
+            <div class="row mb-2">
+                <div class="col-sm-6">
+                    <h1 class="m-0 text-dark">Dashboard</h1>
+                </div><!-- /.col -->
+                <div class="col-sm-6">
+                    <ol class="breadcrumb float-sm-right">
+                        <li class="breadcrumb-item"><a href="#">Home</a></li>
+                        <li class="breadcrumb-item active">Dashboard</li>
+                    </ol>
+                </div><!-- /.col -->
+            </div><!-- /.row -->
+        </div><!-- /.container-fluid -->
+    </div>
+    <!-- /.content-header -->
+
+    <section class="content">
+    <div class="card">
+        <div class="card-header">
+            <h3 class="card-title">Tabela Produtos</h3>
+        </div>
+        <!-- /.card-header -->
+        <div class="card-body">
+
+        </div>
+        <!-- /.card-body -->
+    </div>
+    <!-- /.card -->
+    </section>
+
+    <div class="modal fade" id="modal-default">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title">Atualizar</h4>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                        <form role="form">
+                            <div class="row">
+                                <div class="col-sm-12">
+                                    <!-- text input -->
+                                    <div class="form-group">
+                                        <label>Nome produto</label>
+                                        <input id="nome-modal" type="text" class="form-control" placeholder="Caneca, Camiseta , Boné ...">
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-sm-3">
+                                    <div class="form-group">
+
+                                        <label>Tamanho</label>
+                                        <input id="tamanho-modal" type="text" class="form-control" placeholder="P , M , G , GG ... " >
+
+                                    </div>
+                                </div>
+
+                                <div class="col-sm-3">
+                                    <div class="form-group">
+
+                                        <label>Quantidade</label>
+                                        <input id="qtd-modal" type="text" class="form-control">
+                                    </div>
+                                </div>
+
+                                <div class="col-sm-6">
+                                    <div class="form-group">
+
+                                        <label>Valor Unitário</label>
+                                        <input id="valor-unitario-modal" type="text" class="form-control">
+                                    </div>
+                                </div>
+
+                            </div>
+
+                            <div class="row">
+                                <div class="col-sm-12">
+                                    <!-- textarea -->
+                                    <div class="form-group">
+                                        <label>Modelo</label>
+                                        <textarea id="modelo-modal" class="form-control" rows="3" placeholder="Seja livre ... "></textarea>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                </div>
+                <div class="modal-footer justify-content-between">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary" id="btn-atualizar" data-dismiss="modal">Atualizar Produto</button>
+                </div>
+            </div>
+            <!-- /.modal-content -->
+        </div>
+        <!-- /.modal-dialog -->
+    </div>
+    <!-- /.modal -->
+
+
+</div>
+
+
+<th:block layout:fragment="script">
+
+
+    <script>
+
+
+        listarEstoque();
+
+        function setaDadosModal(linha,id) {
+            $("#nome-modal").val($(linha).find(".tipo").text());
+            $("#modelo-modal").val($(linha).find(".modelo").text());
+            $("#tamanho-modal").val($(linha).find(".tamanho").text());
+            $("#valor-unitario-modal").val($(linha).find(".valor-unitario span").text());
+            $("#qtd-modal").val($(linha).find(".quantidade").text());
+           // $("#id-modal").val(id);
+
+            atualizarProduto(id);
+
+        }
+
+
+        function atualizarProduto(id) {
+            $("#btn-atualizar").click(function(){
+                var valor = $('#valor-unitario-modal').val().replace(",", ".");
+                var url1 = window.location.origin+"/admin/estoque/cadastrarProduto";
+                var data = {
+                    "prod_id":id,
+                    "tipo": $('#nome-modal').val(),
+                    "modelo": $('#modelo-modal').val(),
+                    "quantidade": $('#qtd-modal').val(),
+                    "tamanho": $('#tamanho-modal').val(),
+                    "valor": valor
+                };
+
+                $.ajax({
+                    type: 'post',
+                    data: JSON.stringify(data),
+                    url:url1,
+                    contentType:"application/json",
+                    success: function(retorno){
+
+                        $(".card-header").append("<div id='message-sucess' class=\"alert alert-success alert-dismissible\">\n" +
+                            "                "+"Registro atualizado com sucesso"+"</div>");
+
+                        setTimeout(
+                            function()
+                            {
+                                $("#message-sucess").remove();
+                                document.location.reload(true);
+                            }, 2000);
+                    }
+                });
+
+            });
+        }
+
+
+        function listarEstoque() {
+
+            $("#example1").remove();
+
+            $(".card-body").append(" <table id=\"example1\" class=\"table table-bordered table-striped\">\n" +
+                "                <thead>\n" +
+                "                <tr>\n" +
+                "                    <th>Nome Produto</th>\n" +
+                "                    <th>Modelo</th>\n" +
+                "                    <th>Tamanho</th>\n" +
+                "                    <th>Valor Unitário</th>\n" +
+                "                    <th>Quantidade</th>\n" +
+                "                    <th>Valor Total</th>\n" +
+                "                </tr>\n" +
+                "                </thead>\n" +
+                "                <tbody id='content-table-body'>\n" +
+                "                </tbody>\n" +
+                "            </table>");
+
+            var url1 = window.location.origin+"/admin/estoque/listarEstoque";
+            $.ajax({
+                type: 'get',
+                url:url1,
+                contentType:"application/json",
+                success: function(retorno){
+                    $( retorno ).each(function( index,value ) {
+                        $("#content-table-body").append(
+                            "                <tr class='pointer-tr' data-toggle=\"modal\" data-target=\"#modal-default\" onclick='setaDadosModal(this,"+value.prod_id+")'>\n" +
+                            "                    <td class='tipo'>"+value.tipo+"</td>\n" +
+                            "                    <td class='modelo'>"+value.modelo+"</td>\n" +
+                            "                    <td class='tamanho'>"+value.tamanho+"</td>\n" +
+                            "                    <td class='valor-unitario'>R$ <span>"+value.valor+"</span></td>\n" +
+                            "                    <td class='quantidade'>"+value.quantidade+"</td>\n" +
+                            "                    <td class='valor-total'>R$ <span>"+value.quantidade*value.valor+"</span></td>\n" +
+                            "                </tr>\n"
+                        );
+                    });
+                }
+            });
+        }
+
+
+        $(document).ready(function(){
+
+            $(function () {
+                $("#example1").DataTable({
+                    "responsive": true,
+                    "autoWidth": false,
+                    "bInfo": false,
+                    dom: 'Bfrtip',
+                    buttons: [
+                         'excel', 'pdf', 'print'
+                    ]
+                });
+
+            });
+
+        });
+
+    </script>
+    <script src="https://code.jquery.com/jquery-3.5.1.js"></script>
+    <script src="https://cdn.datatables.net/1.10.22/js/jquery.dataTables.min.js"></script>
+    <script src="/admin/plugins/datatables-bs4/js/dataTables.bootstrap4.min.js"></script>
+    <script src="/admin/plugins/datatables-responsive/js/dataTables.responsive.min.js"></script>
+    <script src="/admin/plugins/datatables-responsive/js/responsive.bootstrap4.min.js"></script>
+    <script src="https://cdn.datatables.net/buttons/1.6.4/js/dataTables.buttons.min.js"></script>
+    <script src="https://cdn.datatables.net/buttons/1.6.4/js/buttons.flash.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.1.3/jszip.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/pdfmake.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/vfs_fonts.js"></script>
+    <script src="https://cdn.datatables.net/buttons/1.6.4/js/buttons.html5.min.js"></script>
+    <script src="https://cdn.datatables.net/buttons/1.6.4/js/buttons.print.min.js"></script>
+
+</th:block>
+
+</body>
+</html>

@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorator="/admin/admin_layout">
+<head>
+    <meta charset="UTF-8">
+    <title>Estoque add</title>
+
+    <div layout:fragment="style">
+
+
+    </div>
+
+</head>
+<body>
+
+<div layout:fragment="content">
+
+    <!-- Content Header (Page header) -->
+    <div class="content-header">
+        <div class="container-fluid">
+            <div class="row mb-2">
+                <div class="col-sm-6">
+                    <h1 class="m-0 text-dark">Estoque</h1>
+                </div><!-- /.col -->
+                <div class="col-sm-6">
+                    <ol class="breadcrumb float-sm-right">
+                        <li class="breadcrumb-item"><a href="/admin/dashboard">Home</a></li>
+                        <li class="breadcrumb-item active">Estoque</li>
+                    </ol>
+                </div><!-- /.col -->
+            </div><!-- /.row -->
+        </div><!-- /.container-fluid -->
+    </div>
+    <!-- /.content-header -->
+
+    <section class="content">
+        <div class="col-md-12">
+            <!-- general form elements disabled -->
+            <div class="card card-warning">
+                <div class="card-header">
+                    <h3 class="card-title">Cadastro de Produtos</h3>
+                </div>
+                <!-- /.card-header -->
+                <div class="card-body">
+                    <form role="form">
+                        <div class="row">
+                            <div class="col-sm-6">
+                                <!-- text input -->
+                                <div class="form-group">
+                                    <label>Nome produto</label>
+                                    <input id="nome" type="text" class="form-control" placeholder="Caneca, Camiseta , Boné ...">
+                                </div>
+                            </div>
+
+                            <div class="col-sm-2">
+                                <div class="form-group">
+
+                                        <label>Tamanho</label>
+                                        <input id="tamanho" type="text" class="form-control" placeholder="P , M , G , GG ... " >
+
+                                </div>
+                            </div>
+
+                            <div class="col-sm-2">
+                                <div class="form-group">
+
+                                        <label>Quantidade</label>
+                                        <input id="qtd" type="text" class="form-control">
+
+                                </div>
+                            </div>
+
+                            <div class="col-sm-2">
+                                <div class="form-group">
+
+                                    <label>Valor Unitário</label>
+                                    <input id="valor-unitario" type="text" class="form-control" placeholder="Ex : 59.90">
+                                </div>
+                            </div>
+
+                        </div>
+
+                        <div class="row">
+                            <div class="col-sm-6">
+                                <!-- textarea -->
+                                <div class="form-group">
+                                    <label>Modelo</label>
+                                    <textarea id="modelo" class="form-control" rows="3" placeholder="Seja livre ... "></textarea>
+                                </div>
+                            </div>
+                            <div class="col-sm-6">
+                                <div class="form-group">
+                                    <label>Descrição</label>
+                                    <textarea id="desc" class="form-control" rows="3" placeholder="Enter ..." ></textarea>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-sm-9">
+                            </div>
+                            <div class="col-sm-3">
+                            <button id="submit" type="button" class="btn  btn-block btn-default .btn-sm">Cadastrar</button>
+                            </div>
+                        </div>
+
+                    </form>
+
+                </div>
+                <!-- /.card-body -->
+            </div>
+        </div>
+    <!-- /.card -->
+    </section>
+</div>
+
+<th:block layout:fragment="script">
+
+    <script>
+
+
+
+        $("#submit").click(function(){
+            var valor = $('#valor-unitario').val().replace(",", ".");
+            var url1 = window.location.origin+"/admin/estoque/cadastrarProduto";
+            var data = {
+                "tipo": $('#nome').val(),
+                "modelo": $('#modelo').val(),
+                "quantidade": $('#qtd').val(),
+                "descricao": $('#desc').val(),
+                "tamanho": $('#tamanho').val(),
+                "valor": valor,
+            };
+
+            $.ajax({
+                type: 'post',
+                data: JSON.stringify(data),
+                url:url1,
+                contentType:"application/json",
+                success: function(retorno){
+
+                    $(".content").append("<div id='message-sucess' class=\"alert alert-success alert-dismissible\">\n" +
+                        "                <button type=\"button\" class=\"close\" data-dismiss=\"alert\" aria-hidden=\"true\">×</button>\n" +
+                        "                <h4><i class=\"icon fa fa-check\"></i> Sucesso!</h4>\n" +
+                        "                "+retorno+"</div>");
+
+
+                    setTimeout(
+                        function()
+                        {
+                          $("#message-sucess").remove();
+                            $('#nome').val("");
+                            $('#modelo').val("");
+                            $('#qtd').val("");
+                            $('#desc').val("");
+                            $('#tamanho').val("");
+                        }, 3000);
+
+                }
+            });
+
+        });
+
+
+    </script>
+</th:block>
+
+</body>
+</html>
