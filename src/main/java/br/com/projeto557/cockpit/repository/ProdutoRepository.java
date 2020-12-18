@@ -16,8 +16,6 @@ public interface ProdutoRepository extends CrudRepository<ProdutoEntity, Integer
     Collection<Object> findCountTypesNative();
 
 
-
-
     @Query(
             value = "select count(quantidade) as total,\n" +
                     "    count(case when quantidade > 10  or quantidade = 10 then 1 else null end) as verde,\n" +

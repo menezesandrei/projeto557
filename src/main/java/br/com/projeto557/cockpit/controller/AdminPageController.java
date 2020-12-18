@@ -19,10 +19,14 @@ public class AdminPageController {
         return "admin/estoque-add";
     }
 
-
     @RequestMapping({"/estoque","estoque/list"})
     public String listEstoque(){
         return "admin/estoque-list";
+    }
+
+    @RequestMapping("/sincronizar")
+    public String sincronizar(){
+        return "admin/sinc";
     }
 
 }

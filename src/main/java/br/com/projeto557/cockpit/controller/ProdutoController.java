@@ -20,7 +20,6 @@ public class ProdutoController {
         return new ResponseEntity<>(produtoService.buscarTodosProdutosDoEstoque(), HttpStatus.OK);
     }
 
-
     @GetMapping(path = "/listarEstoque/tipo")
     public ResponseEntity<Iterable<Object>> buscarTodosProdutosDoEstoquePorTipo(){
         return new ResponseEntity<>(produtoService.buscarTodosProdutosDoEstoqueSeparadosPorTipo(), HttpStatus.OK);
@@ -35,5 +34,11 @@ public class ProdutoController {
     public ResponseEntity<String> salvarProduto(@RequestBody ProdutoEntity produtoEntity) {
         produtoService.salvarProdutoEstoque(produtoEntity);
         return new ResponseEntity<>("Produto Cadastrado com sucesso", HttpStatus.OK);
+    }
+
+    @GetMapping(path = "/sincronizar/lojaIntegrada")
+    public ResponseEntity<String> sincronizarLojaIntegrada() {
+        produtoService.sincronizarLojaIntegrada();
+        return new ResponseEntity<>("SincronizadoComSucesso", HttpStatus.OK);
     }
 }

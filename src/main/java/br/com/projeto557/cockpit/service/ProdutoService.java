@@ -1,5 +1,6 @@
 package br.com.projeto557.cockpit.service;
 
+import br.com.projeto557.cockpit.consumes.ApiLojaIntegrada;
 import br.com.projeto557.cockpit.dto.TipoReturn;
 import br.com.projeto557.cockpit.entity.ProdutoEntity;
 import br.com.projeto557.cockpit.repository.ProdutoRepository;
@@ -12,6 +13,9 @@ public class ProdutoService {
 
     @Autowired
     ProdutoRepository produtoRepository;
+
+    @Autowired
+    ApiLojaIntegrada apiLojaIntegrada;
 
     public Iterable<ProdutoEntity> buscarTodosProdutosDoEstoque(){
         return produtoRepository.findAll();
@@ -28,4 +32,7 @@ public class ProdutoService {
         return produtoRepository.save(product);
     }
 
+    public void sincronizarLojaIntegrada(){
+      apiLojaIntegrada.sincronizarEstoque();
+    }
 }

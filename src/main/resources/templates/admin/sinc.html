@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorator="/admin/admin_layout">
+<head>
+    <meta charset="UTF-8">
+    <title>Estoque add</title>
+
+    <div layout:fragment="style">
+
+
+    </div>
+
+</head>
+<body>
+
+<div layout:fragment="content">
+
+Hello word.
+
+</div>
+
+<th:block layout:fragment="script">
+
+    <script>
+
+        $( document ).ready(function() {
+        var url1 = window.location.origin+"/admin/estoque/sincronizar/lojaIntegrada";
+          $.ajax({
+                type: 'get',
+                url:url1,
+                contentType:"application/json",
+                success: function(retorno){
+                 alert("SINCRONIZOU");
+                }
+            });
+        });
+    </script>
+</th:block>
+
+</body>
+</html>
