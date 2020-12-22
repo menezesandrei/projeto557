@@ -165,7 +165,7 @@
                     "modelo": $('#modelo-modal').val(),
                     "quantidade": $('#qtd-modal').val(),
                     "tamanho": $('#tamanho-modal').val(),
-                    "valor": valor
+                    "preco_venda": valor
                 };
 
                 $.ajax({
@@ -222,9 +222,9 @@
                             "                    <td class='tipo'>"+value.tipo+"</td>\n" +
                             "                    <td class='modelo'>"+value.modelo+"</td>\n" +
                             "                    <td class='tamanho'>"+value.tamanho+"</td>\n" +
-                            "                    <td class='valor-unitario'>R$ <span>"+value.valor+"</span></td>\n" +
+                            "                    <td class='valor-unitario'>R$ <span>"+value.preco_venda+"</span></td>\n" +
                             "                    <td class='quantidade'>"+value.quantidade+"</td>\n" +
-                            "                    <td class='valor-total'>R$ <span>"+value.quantidade*value.valor+"</span></td>\n" +
+                            "                    <td class='valor-total'>R$ <span>"+value.quantidade*value.preco_venda+"</span></td>\n" +
                             "                </tr>\n"
                         );
                     });

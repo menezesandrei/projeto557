@@ -1,5 +1,6 @@
 package br.com.projeto557.cockpit;
 
+import br.com.projeto557.cockpit.dto.EstoqueLojaIntegradaHeader;
 import br.com.projeto557.cockpit.dto.ProdutoLojaIntegradaHeader;
 import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
@@ -15,7 +16,7 @@ import org.springframework.web.util.UriComponentsBuilder;
 class Projeto557ApplicationTests {
 
     @Test
-    public void consumerMovieJsonByTitleTest() {
+    public void consumerProdutoLojaIntegradaTest() {
 //https://api.awsli.com.br/v1/produto/?format=json&chave_api=13bde734dd6b99b08293&chave_aplicacao=b2761f38-783e-4c10-9fe7-413fe7952dba&limit=20
 
         RestTemplate movieTemplate = new RestTemplate();
@@ -31,6 +32,26 @@ class Projeto557ApplicationTests {
                 .build();
 
         ResponseEntity<ProdutoLojaIntegradaHeader> response = movieTemplate.getForEntity(uri.toUriString(), ProdutoLojaIntegradaHeader.class);
+        System.out.println(response.getBody());
+    }
+
+    @Test
+    public void consumerEstoqueLojaIntegradaTest() {
+//https://api.awsli.com.br/v1/produto_estoque/?format=json&chave_api=13bde734dd6b99b08293&chave_aplicacao=b2761f38-783e-4c10-9fe7-413fe7952dba
+
+        RestTemplate movieTemplate = new RestTemplate();
+        UriComponents uri = UriComponentsBuilder.newInstance()
+                .scheme("https")
+                .host("api.awsli.com.br")
+                .path("v1/produto_estoque")
+                .queryParam("format", "json")
+                .queryParam("chave_api", "13bde734dd6b99b08293")
+                .queryParam("chave_aplicacao", "b2761f38-783e-4c10-9fe7-413fe7952dba")
+                .queryParam("offset", "0")
+                .queryParam("limit", "20")
+                .build();
+
+        ResponseEntity<EstoqueLojaIntegradaHeader> response = movieTemplate.getForEntity(uri.toUriString(), EstoqueLojaIntegradaHeader.class);
         System.out.println(response.getBody());
     }
 

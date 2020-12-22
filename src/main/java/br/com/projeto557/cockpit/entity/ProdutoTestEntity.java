@@ -1,20 +1,22 @@
 package br.com.projeto557.cockpit.entity;
 
-
 import lombok.*;
 
-import javax.persistence.*;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
 import java.math.BigDecimal;
 import java.sql.Timestamp;
 
-@Entity(name = "produto")
+@Entity(name = "produto_test")
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
 @EqualsAndHashCode
-public class ProdutoEntity {
+public class ProdutoTestEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -27,5 +29,4 @@ public class ProdutoEntity {
     private int quantidade;
     private Timestamp data_cadastro;
     private String tamanho;
-
 }

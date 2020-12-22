@@ -45,7 +45,7 @@
                 <div class="card-body">
                     <form role="form">
                         <div class="row">
-                            <div class="col-sm-6">
+                            <div class="col-sm-4">
                                 <!-- text input -->
                                 <div class="form-group">
                                     <label>Nome produto</label>
@@ -76,6 +76,14 @@
 
                                     <label>Valor Unitário</label>
                                     <input id="valor-unitario" type="text" class="form-control" placeholder="Ex : 59.90">
+                                </div>
+                            </div>
+
+                            <div class="col-sm-2">
+                                <div class="form-group">
+
+                                    <label>Valor Custo</label>
+                                    <input id="valor-custo" type="text" class="form-control" placeholder="Ex : 59.90">
                                 </div>
                             </div>
 
@@ -123,14 +131,15 @@
 
         $("#submit").click(function(){
             var valor = $('#valor-unitario').val().replace(",", ".");
+            var valor_custo = $('#valor-custo').val().replace(",", ".");
             var url1 = window.location.origin+"/admin/estoque/cadastrarProduto";
             var data = {
                 "tipo": $('#nome').val(),
                 "modelo": $('#modelo').val(),
                 "quantidade": $('#qtd').val(),
-                "descricao": $('#desc').val(),
                 "tamanho": $('#tamanho').val(),
-                "valor": valor,
+                "preco_venda": valor,
+                "preco_custo":valor_custo,
             };
 
             $.ajax({
@@ -155,6 +164,8 @@
                             $('#qtd').val("");
                             $('#desc').val("");
                             $('#tamanho').val("");
+                            $('#valor-unitario').val("");
+                             $('#valor-custo').val("");
                         }, 3000);
 
                 }

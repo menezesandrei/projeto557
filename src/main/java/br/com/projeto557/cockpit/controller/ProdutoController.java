@@ -25,9 +25,19 @@ public class ProdutoController {
         return new ResponseEntity<>(produtoService.buscarTodosProdutosDoEstoqueSeparadosPorTipo(), HttpStatus.OK);
     }
 
-    @GetMapping(path = "/listarEstoque/consolidado")
+    @GetMapping(path = "/listarEstoque/donut")
+    public ResponseEntity<Iterable<Object>> buscarTodosPrecosDoEstoquePorTipo(){
+        return new ResponseEntity<>(produtoService.buscarTodosPrecosDoEstoqueSeparadosPorTipo(), HttpStatus.OK);
+    }
+
+    @GetMapping(path = "/listarEstoque/preco")
+    public ResponseEntity<Iterable<Object>> buscarTodosPrecosDoEstoque(){
+        return new ResponseEntity<>(produtoService.buscarTodosPrecosDoEstoque(), HttpStatus.OK);
+    }
+
+    @GetMapping(path = "/listarEstoque/totais")
     public ResponseEntity<Iterable<Object>> buscarProdutosDoEstoqueConsolidado(){
-        return new ResponseEntity<>(produtoService.buscarProdutosDoEstoqueConsolidados(), HttpStatus.OK);
+        return new ResponseEntity<>(produtoService.buscarTotaisProdutosDoEstoque(), HttpStatus.OK);
     }
 
     @PostMapping(path = "/cadastrarProduto")

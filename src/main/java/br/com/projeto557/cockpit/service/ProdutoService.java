@@ -24,8 +24,14 @@ public class ProdutoService {
     public Iterable<Object> buscarTodosProdutosDoEstoqueSeparadosPorTipo(){
         return produtoRepository.findCountTypesNative();
     }
-    public Iterable<Object> buscarProdutosDoEstoqueConsolidados(){
-        return produtoRepository.findConsolidatedValues();
+    public Iterable<Object> buscarTodosPrecosDoEstoqueSeparadosPorTipo(){
+        return produtoRepository.findPrecoTotalPorTipo();
+    }
+    public Iterable<Object> buscarTodosPrecosDoEstoque(){
+        return produtoRepository.findPrecoTotalGeral();
+    }
+    public Iterable<Object> buscarTotaisProdutosDoEstoque(){
+        return produtoRepository.findTotaisEstoque();
     }
 
     public ProdutoEntity salvarProdutoEstoque(ProdutoEntity product){
